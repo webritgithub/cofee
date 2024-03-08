@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coffee Listing</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('https://img.freepik.com/free-vector/coffee-seamless-pattern-background-vector-with-white-icons-black-coffee-pot-percolator-steaming-mugs-cups-beans-hearts-espresso-filter-cappuccino-iced-coffee-square-format_1284-44088.jpg?w=740&t=st=1709904174~exp=1709904774~hmac=de2ac66cefae9b4d43cb304658c840e2e9c030fd507376e7ea3e511a6e2958f7');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .app {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #000;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  h1 {
+    text-align: center;
+    font-family: 'Fantasy';
+    color: #fff;
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+   p {
+      text-align: center;
+      color: #666;
+      font-size: 18px;
+      margin-bottom: 30px;
+      font-family:'Helvetica';
+    }
+  label {
+    display: block;
+    margin-bottom: 10px;
+    color: #fff;
+    font-size: 18px;
+  }
+
+  .coffee-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+
+  .card {
+    width: 48%;
+    margin-bottom: 20px;
+    background-color: brown;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+  }
+
+  .card-image {
+    width: 100%;
+    height: auto;
+    border-bottom: 0px solid #ddd;
+  }
+
+  .card-details {
+    padding: 20px;
+  }
+
+  .card-details h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .card-details p {
+    margin: 5px 0;
+    color: #000;
+    font-size: 18px;
+  }
+
+  .popular-tag {
+    background-color: #ffc107;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-right: 5px;
+    font-size: 16px;
+  }
+
+  .availability {
+    background-color: MediumSeaGreen;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 16px;
+  }
+
+  .availability.available {
+    background-color: #000;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .btn:hover {
+    background-color: #000;
+  }
+
+  .card-btn {
+    display: block;
+    padding: 10px;
+    text-align: center;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .card-btn:hover {
+    background-color: #2980b9;
+  }
+</style>
+
+</head>
+<body>
+  <div class="app">
+    <h1>Coffee Listing</h1>
+    <p>Welcome to our coffee collection. Discover our finest selection of hand-picked coffees.</p>
+    <label>
+      Show Available Only
+      <input type="checkbox" id="availabilityCheckbox">
+    </label>
+    <div class="coffee-list" id="coffeeList">
+      <!-- Coffee items will be dynamically added here -->
+    </div>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const coffeeList = document.getElementById('coffeeList');
+  const availabilityCheckbox = document.getElementById('availabilityCheckbox');
+
+const jsonData = {
+    "title": "Simple Coffee Listing",
+    "description": "This challenge is great for working with Front-end libraries like React, Vue,... You will need to implement a reusable card component with different variables based on the data given.",
+    "userStories": [
+      {
+        "content": "Create a coffee listing page that matches the given design."
+      },
+      {
+        "content": "Use React or other Front-end libraries for this challenge."
+      },
+      {
+        "content": "Create a Reusable Card component."
+      },
+      {
+        "content": "The card component should include a picture, name, pricing, rating, and number of votes if exists."
+      },
+      {
+        "content": "The card component should render popular tag, availability status conditionally."
+      },
+      {
+        "content": "Render Coffee list with given data. The data should come from a given API or downloaded JSON file."
+      },
+      {
+        "content": "Users can choose to list all products or just available products."
+      },
+      {
+        "content": "Deploy the solution and submit Repository URL and Demo URL."
+      }
+    ],
+    "text": [
+      { "content": "Our Collection" },
+      {
+        "content": "Introducing our Coffee Collection, a selection of unique coffees from different roast types and origins, expertly roasted in small batches and shipped fresh weekly."
+      },
+      { "content": "All Products" },
+      { "content": "Available Now" }
+    ],
+    "coffees": [
+      {
+        "name": "Espresso",
+        "image": "https://i0.wp.com/blog.hargapedia.com.my/wp-content/uploads/2022/02/expresso.jpg?resize=612%2C408&ssl=1",
+        "price": 2.99,
+        "rating": 4.5,
+        "votes": 100,
+        "availability": true,
+        "popular": true
+      },
+      {
+        "name": "Latte",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Cappuccino_at_Sightglass_Coffee.jpg/1200px-Cappuccino_at_Sightglass_Coffee.jpg",
+        "price": 3.49,
+        "rating": 4.2,
+        "votes": 80,
+        "availability": false,
+        "popular": false
+      },
+      {
+        "name": "Cappuccino",
+        "image": "https://t4.ftcdn.net/jpg/01/94/82/87/360_F_194828703_vuNjz8Otb66VfI4rQyg9tBUPuGAugsUR.jpg",
+        "price": 3.99,
+        "rating": 4.3,
+        "votes": 90,
+        "availability": true,
+        "popular": true
+      },
+      {
+        "name": "Americano",
+        "image": "https://img.freepik.com/free-photo/close-up-view-brown-coffee-seeds-with-coffee-dark_179666-32787.jpg?size=626&ext=jpg&ga=GA1.1.1395880969.1709683200&semt=ais",
+        "price": 3.29,
+        "rating": 4.1,
+        "votes": 85,
+        "availability": true,
+        "popular": false
+      },
+      {
+        "name": "Mocha",
+        "image": "https://food-images.files.bbci.co.uk/food/recipes/the_perfect_mocha_coffee_29100_16x9.jpg",
+        "price": 4.49,
+        "rating": 4.4,
+        "votes": 95,
+        "availability": false,
+        "popular": true
+      }
+    ]
+  };
+
+  const coffeeData = jsonData.coffees;
+
+  renderCoffeeList(coffeeData);
+
+  availabilityCheckbox.addEventListener('change', function () {
+    renderCoffeeList(coffeeData);
+  });
+
+  // Render coffee items
+  function renderCoffeeList(coffeeData) {
+    coffeeList.innerHTML = '';
+
+    coffeeData.forEach(coffee => {
+      if (availabilityCheckbox.checked && !coffee.availability) {
+        return; // Skip rendering if available only is checked and coffee is unavailable
+      }
+
+      const card = document.createElement('div');
+      card.classList.add('card');
+
+      const image = document.createElement('img');
+      image.src = coffee.image;
+      image.alt = coffee.name;
+      image.classList.add('card-image');
+
+      const details = document.createElement('div');
+      details.classList.add('card-details');
+
+      const name = document.createElement('h2');
+      name.textContent = coffee.name;
+
+      const price = document.createElement('p');
+      price.textContent = `Price: $${coffee.price}`;
+
+      const rating = document.createElement('p');
+      rating.textContent = `Rating: ${coffee.rating} (${coffee.votes} votes)`;
+
+      if (coffee.popular) {
+        const popularTag = document.createElement('p');
+        popularTag.textContent = 'Popular';
+        popularTag.classList.add('popular-tag');
+        details.appendChild(popularTag);
+      }
+
+      const availability = document.createElement('p');
+      availability.textContent = coffee.availability ? 'Available' : 'Out of Stock';
+      availability.classList.add('availability');
+
+      details.appendChild(name);
+      details.appendChild(price);
+      details.appendChild(rating);
+      details.appendChild(availability);
+
+      card.appendChild(image);
+      card.appendChild(details);
+
+      coffeeList.appendChild(card);
+    });
+  }
+});
+
+</script>
+</body>
+</html>
